@@ -30,11 +30,12 @@
     }
   },
   "bundle": {
-    "active": true,
-    "targets": [
-      "nsis",
-      "dmg"
-    ],
+  "active": true,
+  "targets": [
+    "nsis",
+    "dmg"
+  ],
+  "createUpdaterArtifacts": true,
     "category": "Business",
     "shortDescription": "NTS Business Management Intelligence",
     "longDescription": "NTS BMI desktop application for secure business management, finance, projects, communication, users and reporting.",
@@ -62,8 +63,12 @@
     ]
   },
   "plugins": {
-    "updater": {
-      "requireSignedVersion": true
-    }
+  "updater": {
+    "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDI3MzJEOTJBMjgxODRFNDMKUldSRFRoZ29LdGt5SituTmQ1YnRFamVEb3NWbzBBOHc3cUlsK1pxd25iaExiUTREekkydFFBelAK",
+    "endpoints": [
+      "https://github.com/SANTS2006/nts-bmi-desktop/releases/latest/download/latest.json"
+    ],
+    "requireSignedVersion": true
   }
+}
 }

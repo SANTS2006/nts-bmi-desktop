@@ -18,6 +18,7 @@ import NotFound from "./pages/NotFound";
 
 import Notifications from "./pages/Notifications";
 import NotificationDetails from "./pages/NotificationDetails";
+import UpdateNotification from "./components/UpdateNotification";
 
 
 import Profile from "./pages/Profile";
@@ -102,415 +103,417 @@ import SkillsDetails from "./pages/SkillsDetails.jsx";
 function App() {
 
   return (
+    <>
+      <Routes>
 
-    <Routes>
+        {/* ==================================================
+            DEFAULT
+        ================================================== */}
 
-
-      {/* ==================================================
-          DEFAULT
-      ================================================== */}
-
-      <Route
-        path="/"
-        element={
-          <Navigate
-            to="/login"
-            replace
-          />
-        }
-      />
-
-
-      {/* ==================================================
-          PUBLIC
-      ================================================== */}
-
-      <Route
-        path="/login"
-        element={
-          <Login />
-        }
-      />
-
-
-      <Route
-        path="/register"
-        element={
-          <Register />
-        }
-      />
-
-      <Route
-          path="/forgot-password"
+        <Route
+          path="/"
           element={
-              <ForgotPassword />
+            <Navigate
+              to="/login"
+              replace
+            />
           }
-      />
+        />
 
 
-      <Route
-          path="/reset-password"
+        {/* ==================================================
+            PUBLIC
+        ================================================== */}
+
+        <Route
+          path="/login"
           element={
-              <ResetPassword />
+            <Login />
           }
-      />
+        />
 
 
-      {/* ==================================================
-          PROTECTED
-      ================================================== */}
+        <Route
+          path="/register"
+          element={
+            <Register />
+          }
+        />
 
-      <Route
-        element={
-          <ProtectedRoute />
-        }
-      >
+        <Route
+            path="/forgot-password"
+            element={
+                <ForgotPassword />
+            }
+        />
+
+
+        <Route
+            path="/reset-password"
+            element={
+                <ResetPassword />
+            }
+        />
+
+
+        {/* ==================================================
+            PROTECTED
+        ================================================== */}
 
         <Route
           element={
-            <AppLayout />
+            <ProtectedRoute />
           }
         >
 
-
-          {/* ==================================================
-              DASHBOARD
-          ================================================== */}
-
           <Route
-            path="/dashboard"
             element={
-              <Dashboard />
+              <AppLayout />
             }
-          />
+          >
 
 
-          {/* ==================================================
-              USERS
-          ================================================== */}
+            {/* ==================================================
+                DASHBOARD
+            ================================================== */}
 
-          <Route
-            path="/users"
-            element={
-              <Users />
-            }
-          />
-
-
-          <Route
-            path="/users/:id"
-            element={
-              <UserDetails />
-            }
-          />
-
-
-          {/* ==================================================
-              APPROVALS
-          ================================================== */}
-
-          <Route
-            path="/approvals"
-            element={
-              <Approvals />
-            }
-          />
-
-
-          <Route
-            path="/approvals/history"
-            element={
-              <ApprovalHistory />
-            }
-          />
-
-
-          {/* ==================================================
-              ROLES
-          ================================================== */}
-
-          <Route
-            path="/roles"
-            element={
-              <Roles />
-            }
-          />
-
-
-          <Route
-            path="/roles/:id"
-            element={
-              <RoleDetails />
-            }
-          />
-
-
-          {/* ==================================================
-              PERMISSIONS
-          ================================================== */}
-
-          <Route
-            path="/permissions"
-            element={
-              <Permissions />
-            }
-          />
-
-
-          <Route
-            path="/permissions/:id"
-            element={
-              <PermissionDetails />
-            }
-          />
-
-
-          {/* ==================================================
-              AUDIT LOGS
-          ================================================== */}
-
-          <Route
-            path="/audit-logs"
-            element={
-              <AuditLogs />
-            }
-          />
-
-
-          {/* ==================================================
-              SESSIONS
-          ================================================== */}
-
-          <Route
-            path="/sessions"
-            element={
-              <Sessions />
-            }
-          />
-
-
-          {/* ==================================================
-              NOTIFICATIONS
-          ================================================== */}
-
-          <Route
-            path="/notifications"
-            element={
-              <Notifications />
-            }
-          />
-
-
-          <Route
-            path="/notifications/:notificationId"
-            element={
-              <NotificationDetails />
-            }
-          />
-
-
-          {/* ==================================================
-              HELP
-          ================================================== */}
-
-          <Route
-            path="/help"
-            element={
-              <HelpCenter />
-            }
-          />
-
-
-          {/* ==================================================
-              PROFILE
-          ================================================== */}
-
-          <Route
-            path="/profile"
-            element={
-              <Profile />
-            }
-          />
-
-
-          {/* ==================================================
-              SETTINGS
-          ================================================== */}
-
-          <Route
-            path="/settings"
-            element={
-              <AccountSettings />
-            }
-          />
-
-
-          {/* ==================================================
-              SECURITY
-          ================================================== */}
-
-          <Route
-            path="/security"
-            element={
-              <Security />
-            }
-          />
-
-          <Route
-              path="/password-history"
+            <Route
+              path="/dashboard"
               element={
-                  <PasswordHistory />
+                <Dashboard />
               }
-          />
-          <Route
-              path="/departments"
+            />
+
+
+            {/* ==================================================
+                USERS
+            ================================================== */}
+
+            <Route
+              path="/users"
               element={
-                  <Departments />
+                <Users />
               }
-          />
-          <Route
-              path="/departments/:id"
+            />
+
+
+            <Route
+              path="/users/:id"
               element={
-                  <DepartmentDetails />
+                <UserDetails />
               }
-          />
+            />
 
-          <Route
-              path="/projects"
+
+            {/* ==================================================
+                APPROVALS
+            ================================================== */}
+
+            <Route
+              path="/approvals"
               element={
-                  <Projects />
+                <Approvals />
               }
-          />
+            />
 
-          <Route
-              path="/projects/:id"
+
+            <Route
+              path="/approvals/history"
               element={
-                  <ProjectDetails />
+                <ApprovalHistory />
               }
-          />
+            />
 
-          <Route
-              path="/clients"
+
+            {/* ==================================================
+                ROLES
+            ================================================== */}
+
+            <Route
+              path="/roles"
               element={
-                  <Clients />
+                <Roles />
               }
-          />
+            />
 
-          <Route
-              path="/clients/:id"
+
+            <Route
+              path="/roles/:id"
               element={
-                  <ClientDetails />
+                <RoleDetails />
               }
+            />
+
+
+            {/* ==================================================
+                PERMISSIONS
+            ================================================== */}
+
+            <Route
+              path="/permissions"
+              element={
+                <Permissions />
+              }
+            />
+
+
+            <Route
+              path="/permissions/:id"
+              element={
+                <PermissionDetails />
+              }
+            />
+
+
+            {/* ==================================================
+                AUDIT LOGS
+            ================================================== */}
+
+            <Route
+              path="/audit-logs"
+              element={
+                <AuditLogs />
+              }
+            />
+
+
+            {/* ==================================================
+                SESSIONS
+            ================================================== */}
+
+            <Route
+              path="/sessions"
+              element={
+                <Sessions />
+              }
+            />
+
+
+            {/* ==================================================
+                NOTIFICATIONS
+            ================================================== */}
+
+            <Route
+              path="/notifications"
+              element={
+                <Notifications />
+              }
+            />
+
+
+            <Route
+              path="/notifications/:notificationId"
+              element={
+                <NotificationDetails />
+              }
+            />
+
+
+            {/* ==================================================
+                HELP
+            ================================================== */}
+
+            <Route
+              path="/help"
+              element={
+                <HelpCenter />
+              }
+            />
+
+
+            {/* ==================================================
+                PROFILE
+            ================================================== */}
+
+            <Route
+              path="/profile"
+              element={
+                <Profile />
+              }
+            />
+
+
+            {/* ==================================================
+                SETTINGS
+            ================================================== */}
+
+            <Route
+              path="/settings"
+              element={
+                <AccountSettings />
+              }
+            />
+
+
+            {/* ==================================================
+                SECURITY
+            ================================================== */}
+
+            <Route
+              path="/security"
+              element={
+                <Security />
+              }
+            />
+
+            <Route
+                path="/password-history"
+                element={
+                    <PasswordHistory />
+                }
+            />
+            <Route
+                path="/departments"
+                element={
+                    <Departments />
+                }
+            />
+            <Route
+                path="/departments/:id"
+                element={
+                    <DepartmentDetails />
+                }
+            />
+
+            <Route
+                path="/projects"
+                element={
+                    <Projects />
+                }
+            />
+
+            <Route
+                path="/projects/:id"
+                element={
+                    <ProjectDetails />
+                }
+            />
+
+            <Route
+                path="/clients"
+                element={
+                    <Clients />
+                }
+            />
+
+            <Route
+                path="/clients/:id"
+                element={
+                    <ClientDetails />
+                }
+            />
+
+            <Route
+              path="/tasks"
+              element={<Tasks />}
+            />
+
+          <Route
+              path="/tasks/:taskId"
+              element={<TaskDetails />}
           />
 
           <Route
-            path="/tasks"
-            element={<Tasks />}
+              path="/employees"
+            element={<Employees />}
+          />
+
+          <Route
+              path="/employees/:id"
+              element={<EmployeeDetails />}
+          />
+          <Route
+              path="/teams"
+            element={<Teams />}
+          />
+
+          <Route
+              path="/teams/:id"
+              element={<TeamDetails />}
           />
 
         <Route
-            path="/tasks/:taskId"
-            element={<TaskDetails />}
-        />
+              path="/skills"
+            element={<Skills />}
+          />
 
-        <Route
-            path="/employees"
-           element={<Employees />}
-        />
+          <Route
+              path="/skills/:id"
+              element={<SkillsDetails />}
+          />
 
-        <Route
-            path="/employees/:id"
-            element={<EmployeeDetails />}
-        />
-        <Route
-            path="/teams"
-           element={<Teams />}
-        />
+          <Route
+              path="/performance"
+            element={<Performance />}
+          />
 
-        <Route
-            path="/teams/:id"
-            element={<TeamDetails />}
-        />
+          <Route
+              path="/performance/:id"
+              element={<PerformanceDetails />}
+          />    
+      
+          <Route
+              path="/goals"
+            element={<Goals />}
+          />
 
-       <Route
-            path="/skills"
-           element={<Skills />}
-        />
+          <Route
+              path="/employee-documents"
+              element={<EmployeeDocuments/>}
+          />
 
-        <Route
-            path="/skills/:id"
-            element={<SkillsDetails />}
-        />
+  {/* ==================================================
+              FINANCE & ACCOUNTING
+          ================================================== */}
 
-        <Route
-            path="/performance"
-           element={<Performance />}
-        />
+          <Route path="/finance" element={<FinanceDashboard />} />
+          <Route path="/finance/accounts" element={<Accounts />} />
+          <Route path="/finance/categories" element={<Categories />} />
+          <Route path="/finance/transactions" element={<Transactions />} />
+          <Route path="/finance/invoices" element={<Invoices />} />
+          <Route path="/finance/invoices/:id" element={<InvoiceDetails />} />
+          <Route path="/finance/payments" element={<Payments />} />
+          <Route path="/finance/budgets" element={<Budgets />} />
+          <Route path="/finance/reports" element={<FinanceReports />} />
 
-        <Route
-            path="/performance/:id"
-            element={<PerformanceDetails />}
-        />    
-    
-        <Route
-            path="/goals"
-           element={<Goals />}
-        />
+          <Route path="/teams" element={<Teams />} />
+          <Route path="/teams/:id" element={<TeamDetails />} />
 
-        <Route
-            path="/employee-documents"
-            element={<EmployeeDocuments/>}
-        />
+          <Route path="/skills" element={<Skills />} />
+          <Route path="/skills/:id" element={<SkillsDetails />} />
 
-{/* ==================================================
-            FINANCE & ACCOUNTING
-        ================================================== */}
+          <Route path="/performance" element={<Performance />} />
+          <Route path="/performance/:id" element={<PerformanceDetails />} />
 
-        <Route path="/finance" element={<FinanceDashboard />} />
-        <Route path="/finance/accounts" element={<Accounts />} />
-        <Route path="/finance/categories" element={<Categories />} />
-        <Route path="/finance/transactions" element={<Transactions />} />
-        <Route path="/finance/invoices" element={<Invoices />} />
-        <Route path="/finance/invoices/:id" element={<InvoiceDetails />} />
-        <Route path="/finance/payments" element={<Payments />} />
-        <Route path="/finance/budgets" element={<Budgets />} />
-        <Route path="/finance/reports" element={<FinanceReports />} />
+          <Route path="/goals" element={<Goals />} />
+          <Route path="/employee-documents" element={<EmployeeDocuments />} />
 
-        <Route path="/teams" element={<Teams />} />
-        <Route path="/teams/:id" element={<TeamDetails />} />
+          <Route path="/attendance" element={<Attendance />} />
+          <Route path="/leave" element={<LeaveManagement />} />
+          <Route path="/communication" element={<InternalCommunication />} />
+          <Route path="/reports" element={<Reports />} />
 
-        <Route path="/skills" element={<Skills />} />
-        <Route path="/skills/:id" element={<SkillsDetails />} />
-
-        <Route path="/performance" element={<Performance />} />
-        <Route path="/performance/:id" element={<PerformanceDetails />} />
-
-        <Route path="/goals" element={<Goals />} />
-        <Route path="/employee-documents" element={<EmployeeDocuments />} />
-
-        <Route path="/attendance" element={<Attendance />} />
-        <Route path="/leave" element={<LeaveManagement />} />
-        <Route path="/communication" element={<InternalCommunication />} />
-        <Route path="/reports" element={<Reports />} />
+          </Route>
 
         </Route>
 
-      </Route>
 
+        {/* ==================================================
+            404
+        ================================================== */}
 
-      {/* ==================================================
-          404
-      ================================================== */}
+        <Route
+          path="*"
+          element={
+            <NotFound />
+          }
+        />
+      </Routes>
 
-      <Route
-        path="*"
-        element={
-          <NotFound />
-        }
-      />
-
-
-    </Routes>
+      <UpdateNotification/>
+      
+    </>
+    
 
   );
 
