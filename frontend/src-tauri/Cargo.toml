@@ -1,6 +1,6 @@
 [package]
 name = "nts-bmi"
-version = "1.0.1"
+version = "1.0.2"
 description = "NTS Business Management Intelligence desktop application"
 authors = ["NTS Digital Solutions"]
 edition = "2021"
@@ -27,3 +27,4 @@ strip = true
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-updater = "2"
+

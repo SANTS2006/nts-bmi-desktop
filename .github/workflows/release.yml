@@ -1,0 +1,81 @@
+name: Release NTS BMI Desktop
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and Release NTS BMI
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Generate desktop icons
+        run: npm run desktop:icons
+
+      - name: Build and publish NTS BMI
+        uses: tauri-apps/tauri-action@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          VITE_API_URL: ${{ secrets.NTS_BMI_API_URL }}
+
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+
+        with:
+          projectPath: frontend
+
+          tagName: ${{ github.ref_name }}
+
+          releaseName: NTS BMI ${{ github.ref_name }}
+
+          releaseBody: |
+            ## NTS BMI ${{ github.ref_name }}
+
+            ### What's included
+
+            - NTS BMI desktop application updates
+            - Automatic update support
+            - Signed desktop releases
+            - Security and stability improvements
+
+            ### System requirements
+
+            - Windows 10/11
+            - 64-bit
+            - Internet connection required
+
+          releaseDraft: false
+          prerelease: false
+
+          uploadUpdaterJson: true
+          uploadUpdaterSignatures: true
+
+          updaterJsonPreferNsis: true
+
+          generateReleaseNotes: true
