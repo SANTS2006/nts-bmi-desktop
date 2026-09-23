@@ -1,6 +1,6 @@
 [package]
 name = "nts-bmi"
-version = "1.0.0"
+version = "1.0.1"
 description = "NTS Business Management Intelligence desktop application"
 authors = ["NTS Digital Solutions"]
 edition = "2021"
