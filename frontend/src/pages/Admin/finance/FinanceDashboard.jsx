@@ -1,0 +1,24 @@
+import { useCallback,useEffect,useState } from 'react';
+import { ArrowDownRight,ArrowUpRight,BarChart3,BookOpen,Coins,FileText,RefreshCw,Wallet } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { getFinanceDashboard } from '../../../api/finance.js';
+import { Badge,Card,Empty,ErrorBox,fmtDate,fmtMoney,Loading,Page,toneForStatus,label,unwrap } from './FinanceUI.jsx';
+
+export default function FinanceDashboard(){
+ const [data,setData]=useState(null),[loading,setLoading]=useState(true),[refreshing,setRefreshing]=useState(false),[error,setError]=useState('');
+ const load=useCallback(async(initial=false)=>{try{initial?setLoading(true):setRefreshing(true);setError('');setData(unwrap(await getFinanceDashboard({currency:'SLE'})));}catch(e){setError(e.message||'Unable to load finance dashboard.')}finally{setLoading(false);setRefreshing(false)}},[]);
+ useEffect(()=>{load(true)},[load]);
+ const s=data?.summary||{};
+ return <Page title="Finance & Accounting" description="Monitor company cash, income, expenses, receivables and budgets." icon={Coins} onRefresh={()=>load(false)} refreshing={refreshing}>
+  {error&&<ErrorBox message={error} onClose={()=>setError('')}/>} {loading?<Loading text="Loading financial dashboard..."/>:<>
+   <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    {[[Wallet,'Cash balance',s.totalCash,'blue'],[ArrowUpRight,'Income',s.totalIncome,'green'],[ArrowDownRight,'Expenses',s.totalExpense,'red'],[BarChart3,'Net income',s.netIncome,s.netIncome>=0?'green':'red']].map(([I,t,v,tone])=><Card key={t} className="p-5"><div className="flex items-center justify-between"><div><p className="text-sm text-[var(--bms-text-secondary)]">{t}</p><p className="mt-2 text-2xl font-bold">{fmtMoney(v,data.currency)}</p></div><div className={`flex h-11 w-11 items-center justify-center rounded-xl bg-${tone==='green'?'emerald':tone==='red'?'red':'blue'}-500/10 text-${tone==='green'?'emerald':tone==='red'?'red':'blue'}-500`}><I size={21}/></div></div></Card>)}
+   </div>
+   <div className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
+    <Card><div className="flex items-center justify-between border-b border-[var(--bms-border)] p-5"><div><h2 className="font-semibold">Recent transactions</h2><p className="mt-1 text-xs text-[var(--bms-text-muted)]">Latest financial activity</p></div><Link className="text-xs font-semibold text-blue-500" to="/finance/transactions">View all</Link></div><div className="divide-y divide-[var(--bms-border)]">{data.recentTransactions?.length?data.recentTransactions.map(x=><div key={x.id} className="flex items-center justify-between gap-3 p-4"><div className="min-w-0"><p className="truncate text-sm font-medium">{x.description||'Financial transaction'}</p><p className="mt-1 text-xs text-[var(--bms-text-muted)]">{x.account?.name||'—'} · {fmtDate(x.transactionDate)}</p></div><div className="text-right"><p className={`font-semibold ${x.type==='EXPENSE'?'text-red-500':'text-emerald-500'}`}>{x.type==='EXPENSE'?'-':'+'}{fmtMoney(x.amount,x.currency)}</p><Badge tone={toneForStatus(x.status)}>{label(x.status)}</Badge></div></div>):<Empty text="No transactions yet."/>}</div></Card>
+    <Card><div className="border-b border-[var(--bms-border)] p-5"><h2 className="font-semibold">Financial overview</h2><p className="mt-1 text-xs text-[var(--bms-text-muted)]">Current SLE position</p></div><div className="space-y-4 p-5"><div className="flex justify-between"><span className="text-sm text-[var(--bms-text-secondary)]">Receivables</span><b>{fmtMoney(s.totalReceivables,data.currency)}</b></div><div className="flex justify-between"><span className="text-sm text-[var(--bms-text-secondary)]">Active budgets</span><b>{fmtMoney(s.activeBudget,data.currency)}</b></div><div className="border-t border-[var(--bms-border)] pt-4"><p className="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--bms-text-muted)]">Quick access</p><div className="grid grid-cols-2 gap-2">{[['Accounts','/finance/accounts'],['Invoices','/finance/invoices'],['Budgets','/finance/budgets'],['Reports','/finance/reports']].map(([t,p])=><Link key={p} to={p} className="rounded-lg border border-[var(--bms-border)] p-3 text-sm hover:border-blue-500/30 hover:bg-[var(--bms-surface-soft)]"><FileText size={16} className="mb-2 text-blue-500"/>{t}</Link>)}</div></div></div></Card>
+   </div>
+   <Card><div className="border-b border-[var(--bms-border)] p-5"><h2 className="font-semibold">Accounts</h2></div><div className="grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-4">{data.accounts?.map(a=><div key={a.id} className="rounded-lg border border-[var(--bms-border)] p-4"><div className="flex items-center justify-between"><p className="font-medium">{a.name}</p><Badge>{label(a.type)}</Badge></div><p className="mt-3 text-xl font-bold">{fmtMoney(a.currentBalance,a.currency)}</p><p className="mt-1 text-xs text-[var(--bms-text-muted)]">Current balance</p></div>)}</div></Card>
+  </>}
+ </Page>
+}

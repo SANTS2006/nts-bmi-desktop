@@ -1,0 +1,70 @@
+name: Build NTS BMI Desktop
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "desktop-v*"
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows x64
+            os: windows-latest
+            args: ""
+          - name: macOS Apple Silicon
+            os: macos-latest
+            args: "--target aarch64-apple-darwin"
+          - name: macOS Intel
+            os: macos-latest
+            args: "--target x86_64-apple-darwin"
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.os == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Generate desktop icons
+        run: npm run desktop:icons
+
+      - name: Build NTS BMI desktop app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_API_URL: ${{ secrets.NTS_BMI_API_URL }}
+        with:
+          projectPath: frontend
+          args: ${{ matrix.args }}
+
+      - name: Upload desktop installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: nts-bmi-${{ matrix.name }}
+          path: |
+            frontend/src-tauri/target/release/bundle/**/*.exe
+            frontend/src-tauri/target/release/bundle/**/*.msi
+            frontend/src-tauri/target/release/bundle/**/*.dmg
+          if-no-files-found: error
